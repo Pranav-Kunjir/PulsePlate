@@ -55,6 +55,10 @@ def home():
 
     return render_template('home.html')
 
+@app.route("/workout")
+def workout():
+    print("hello")
+
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     if request.method == 'POST':

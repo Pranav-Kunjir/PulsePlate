@@ -1,61 +1,79 @@
-
-
-
+<head>
+    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename='css/home.css') }}"> 
+</head>
 <!-- templates/home.html -->
 {% extends "base.html" %}
 
 {% block title %}Home{% endblock %}
 
 {% block content %}
-    <h1>Welcome to Flask Auth App</h1>
     {% if username %}
-        <p>Hello, {{ username }}!</p>
-
-        <!-- Workout Form -->
-        <form method="POST" action="/">
-            <label for="day_name">Day:</label>
-            <select name="day_name" id="day_name" required>
-                <option value="Monday">Monday</option>
-                <option value="Tuesday">Tuesday</option>
-                <option value="Wednesday">Wednesday</option>
-                <option value="Thursday">Thursday</option>
-                <option value="Friday">Friday</option>
-                <option value="Saturday">Saturday</option>
-                <option value="Sunday">Sunday</option>
-            </select>
-
-            <label for="set_name">Exercise:</label>
-            <select name="set_name" id="set_name" required>
-                <option value="Push-ups">Push-ups</option>
-                <option value="Squats">Squats</option>
-                <option value="Deadlifts">Deadlifts</option>
-                <option value="Bench Press">Bench Press</option>
-                <option value="Pull-ups">Pull-ups</option>
-            </select>
-
-            <label for="no_of_sets">Number of Sets:</label>
-            <select name="no_of_sets" id="no_of_sets" required>
-                <option value="1">1</option>
-                <option value="2">2</option>
-                <option value="3">3</option>
-                <option value="4">4</option>
-                <option value="5">5</option>
-            </select>
-
-            <label for="wt_of_set">Weight (kg):</label>
-            <select name="wt_of_set" id="wt_of_set" required>
-                <option value="0">0</option>
-                <option value="5">5</option>
-                <option value="10">10</option>
-                <option value="15">15</option>
-                <option value="20">20</option>
-                <option value="25">25</option>
-            </select>
-
-            <button type="submit">Add Workout</button>
-        </form>
+    <div class="main-text">
+        <h1>Hi, {{ username }}!</h1>    
+        <h3>Choose Your Work Out</h3>
+        <div class="workouts">
+            <div class="weightlifting" onclick="window.location.href='{{ url_for('workout') }}';">
+                <h2>Weight Lifting</h2>
+            </div>
+            <div class="cardio">
+                <h2>Cardio</h2>
+            </div>
+            <div class="medetation">
+                <h2>Meditation</h2>
+            </div>
+        </div>
+    </div>
 
     {% else %}
-        <p>Please login or sign up to continue.</p>
+    <div class="authentication cs-container" >
+        <div class="auth-links cs-center">
+            <a class="nav-link" href="{{ url_for('login') }}"><button type="button" class="btn btn-primary">Login</button></a>
+            <a class="nav-link" href="{{ url_for('signup') }}"><button type="button" class="btn btn-primary">SingUp</button></a>
+        </div>
+    </div>
     {% endif %}
 {% endblock %}
+
+
+<!-- <form method="POST" action="/">
+    <label for="day_name">Day:</label>
+    <select name="day_name" id="day_name" required>
+        <option value="Monday">Monday</option>
+        <option value="Tuesday">Tuesday</option>
+        <option value="Wednesday">Wednesday</option>
+        <option value="Thursday">Thursday</option>
+        <option value="Friday">Friday</option>
+        <option value="Saturday">Saturday</option>
+        <option value="Sunday">Sunday</option>
+    </select>
+
+    <label for="set_name">Exercise:</label>
+    <select name="set_name" id="set_name" required>
+        <option value="Push-ups">Push-ups</option>
+        <option value="Squats">Squats</option>
+        <option value="Deadlifts">Deadlifts</option>
+        <option value="Bench Press">Bench Press</option>
+        <option value="Pull-ups">Pull-ups</option>
+    </select>
+
+    <label for="no_of_sets">Number of Sets:</label>
+    <select name="no_of_sets" id="no_of_sets" required>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+        <option value="5">5</option>
+    </select>
+
+    <label for="wt_of_set">Weight (kg):</label>
+    <select name="wt_of_set" id="wt_of_set" required>
+        <option value="0">0</option>
+        <option value="5">5</option>
+        <option value="10">10</option>
+        <option value="15">15</option>
+        <option value="20">20</option>
+        <option value="25">25</option>
+    </select>
+
+    <button type="submit">Add Workout</button>
+</form> -->

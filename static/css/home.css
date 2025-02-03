@@ -1,0 +1,43 @@
+*{
+    box-sizing: border-box;
+    padding: 0;
+    margin: 0px;
+}
+.cs-container{
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    height: 100vh; /* Full viewport height */
+}
+.cs-center{
+    width: 200px;
+    height: 200px;
+    text-align: center;
+    line-height: 200px; /* Vertically center text */
+}
+.auth-links button{
+    width: 10vh;
+}
+.workouts{
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+.workouts div{
+    text-align: center;
+    width: 30vh;
+    flex-direction: row;
+    background-color: #4c566a;
+    padding: 2vh;
+    border-radius: 100px;
+}
+@media only screen and (max-width: 1200px) {
+    .workouts{
+        flex-direction: column;
+        
+    }
+    .workouts div{
+        width: 60vh;
+        margin-top: 10vh;
+    }
+}
