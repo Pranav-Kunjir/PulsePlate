@@ -4,6 +4,7 @@ from flask_sqlalchemy import SQLAlchemy
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
 from flask_migrate import Migrate
+from sqlalchemy.orm import relationship
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = '7897654564321321852'
@@ -21,6 +22,9 @@ class User(db.Model):
     password_hash = db.Column(db.String(200), nullable=False)
     created_at = db.Column(db.DateTime, default=datetime.utcnow)
 
+
+    ## we need to create a relation ship between the models so that we can cross refrence them
+    days = relationship('day', backref='user', lazy=True)
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
 
@@ -28,10 +32,11 @@ class User(db.Model):
         return check_password_hash(self.password_hash, password)
 
 # Day Model
-class Day(db.Model):
+class day(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     day_name = db.Column(db.String(50), nullable=False)
-    exercises = db.Column(db.JSON, nullable=False)
+    split_name = db.Column(db.String(50), nullable=False)
+    # exercises = db.Column(db.JSON, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 # Routes
 @app.route('/', methods=['GET', 'POST'])
@@ -40,24 +45,18 @@ def home():
         user = User.query.get(session['user_id'])
         if request.method == "POST":
             day_name = request.form.get("day_name")
-            set_name = request.form.get("set_name")
-            no_of_sets = request.form.get("no_of_sets")
-            wt_of_set = request.form.get("wt_of_set")
-            set_info = {"sets": no_of_sets, "weight": wt_of_set}
-            exercises = {set_name: set_info}
-            new_day = Day(day_name=day_name, exercises=exercises, user_id=user.id)
+            split_name = request.form.get("split_name")
+            new_day = day(day_name=day_name,split_name=split_name,user_id=user.id)
             db.session.add(new_day)
             db.session.commit()
             flash('Workout added successfully!', 'success')
             return redirect(url_for('home'))
 
-        return render_template('home.html', username=user.username)
+        return render_template('home.html', username=user.username )
 
     return render_template('home.html')
 
-@app.route("/workout")
-def workout():
-    print("hello")
+
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
@@ -116,6 +115,23 @@ def logout():
     session.pop('user_id', None)
     flash('Logged out successfully!')
     return redirect(url_for('home'))
+
+#home page routes
+@app.route("/weight_lifting", methods=['GET', 'POST'])
+def weight_lifting():
+    if 'user_id' not in session:
+        return render_template('weight_lifting.html')
+    user = User.query.get(session['user_id'])
+    days = user.days
+    return render_template('weight_lifting.html', username=user.username , days=days)
+@app.route("/cardio")
+def cardio():
+    print("hello")
+@app.route("/meditation")
+def meditation():
+    print("hello")
+
+
 
 if __name__ == '__main__':
     with app.app_context():
